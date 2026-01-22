@@ -41,6 +41,7 @@ class HomeViewController: UIViewController {
         setupRefresh()
         setupDiscoveryCallBacks()
         
+        seedIfEmpty()
         performFetch()
         
     }
@@ -91,6 +92,14 @@ class HomeViewController: UIViewController {
         }
     }
     
+    private func seedIfEmpty() {
+        let existing = store.fetchAll()
+        guard existing.isEmpty else { return }
+        store.upsert(name: "Living Room TV", ipAddress: "192.168.1.10", isReachable: false)
+        store.upsert(name: "Bedroom Apple TV", ipAddress: "192.168.1.11", isReachable: false)
+        
+    }
+    
     private func performFetch() {
         do {
             try fetchedResultsController.performFetch()
@@ -116,6 +125,13 @@ class HomeViewController: UIViewController {
     }
     
 
+    @IBAction func logoutTapped(_ sender: Any) {
+        TokenStore.shared.deleteToken()
+        let login = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(identifier: "LoginViewController")
+        
+        navigationController?.setViewControllers([login], animated: true)
+    }
 }
 
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
@@ -143,38 +159,35 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
 //MARK: NSFetchedResultsControllerDelegate
 extension HomeViewController: NSFetchedResultsControllerDelegate {
-    func controllerWillChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
-        
-    }
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
-        
+        tableView.reloadData()
     }
     
-    func controller(_ controller: NSFetchedResultsController<any NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-        
-        switch type {
-        case .insert:
-            if let newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
-        case .delete:
-            if let indexPath {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-        case .move:
-            if let indexPath {
-                tableView.deleteRows(at: [indexPath], with: .automatic)
-            }
-            if let newIndexPath {
-                tableView.insertRows(at: [newIndexPath], with: .automatic)
-            }
-        case .update:
-            if let indexPath {
-                tableView.reloadRows(at: [indexPath], with: .automatic)
-            }
-        @unknown default:
-            tableView.reloadData()
-        }
-    }
+//    func controller(_ controller: NSFetchedResultsController<any NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+//        
+//        switch type {
+//        case .insert:
+//            if let newIndexPath {
+//                tableView.insertRows(at: [newIndexPath], with: .automatic)
+//            }
+//        case .delete:
+//            if let indexPath {
+//                tableView.deleteRows(at: [indexPath], with: .automatic)
+//            }
+//        case .move:
+//            if let indexPath {
+//                tableView.deleteRows(at: [indexPath], with: .automatic)
+//            }
+//            if let newIndexPath {
+//                tableView.insertRows(at: [newIndexPath], with: .automatic)
+//            }
+//        case .update:
+//            if let indexPath {
+//                tableView.reloadRows(at: [indexPath], with: .automatic)
+//            }
+//        @unknown default:
+//            tableView.reloadData()
+//        }
+//    }
 }
