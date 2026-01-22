@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Darwin
 
 @MainActor
 final class AirPlayDiscoveryService: NSObject {
@@ -79,7 +80,10 @@ extension AirPlayDiscoveryService: NetServiceDelegate {
             resolving.remove(sender)
         }
         
-        guard let addresses = sender.addresses else {return}
+        guard let addresses = sender.addresses else {
+            return
+        }
+        
         
         if let (ip, port) = Self.extractIPAndPort(from: addresses) {
             let item = ResolvedService(name: sender.name, ipAddress: ip, port: port)
@@ -95,34 +99,52 @@ extension AirPlayDiscoveryService: NetServiceDelegate {
     }
     
     
+    
+    
     // MARK: - Address parsing
     private static func extractIPAndPort(from addresses: [Data]) -> (String, Int)? {
         for data in addresses {
-            var storage = sockaddr_storage()
-            (data as NSData).getBytes(&storage, length: min(data.count, MemoryLayout<sockaddr_storage>.size))
-            
-            switch Int32(storage.ss_family) {
-            case AF_INET:
-                var addr = unsafeBitCast(storage, to: sockaddr_in.self)
-                var buffer = [CChar](repeating: 0, count: Int(INET_ADDRSTRLEN))
-                let ipCString = inet_ntop(AF_INET, &addr.sin_port, &buffer, socklen_t(INET_ADDRSTRLEN))
-                let port = Int(UInt16(bigEndian: addr.sin_port))
-                if let ipCString, let ip = String(validatingUTF8: ipCString) {
+            let result: (String, Int)? = data.withUnsafeBytes { rawBuffer in
+                guard let baseAddress = rawBuffer.baseAddress else { return nil }
+
+                let sockaddrPtr = baseAddress.assumingMemoryBound(to: sockaddr.self)
+
+                switch Int32(sockaddrPtr.pointee.sa_family) {
+
+                case AF_INET:
+                    let addrInPtr = baseAddress.assumingMemoryBound(to: sockaddr_in.self)
+                    var addr = addrInPtr.pointee
+
+                    var buffer = [CChar](repeating: 0, count: Int(INET_ADDRSTRLEN))
+                    var sinAddr = addr.sin_addr
+                    guard inet_ntop(AF_INET, &sinAddr, &buffer, socklen_t(INET_ADDRSTRLEN)) != nil else {
+                        return nil
+                    }
+
+                    let ip = String(cString: buffer)
+                    let port = Int(UInt16(bigEndian: addr.sin_port))
                     return (ip, port)
-                }
-                
-            case AF_INET6:
-                var addr = unsafeBitCast(storage, to: sockaddr_in6.self)
-                var buffer = [CChar](repeating: 0, count: Int(INET6_ADDRSTRLEN))
-                let ipCString = inet_ntop(AF_INET6, &addr.sin6_addr, &buffer, socklen_t(INET6_ADDRSTRLEN))
-                let port = Int(UInt16(bigEndian: addr.sin6_port))
-                if let ipCString, let ip = String(validatingUTF8: ipCString) {
+
+                case AF_INET6:
+                    let addrIn6Ptr = baseAddress.assumingMemoryBound(to: sockaddr_in6.self)
+                    var addr = addrIn6Ptr.pointee
+
+                    var buffer = [CChar](repeating: 0, count: Int(INET6_ADDRSTRLEN))
+                    var sin6Addr = addr.sin6_addr
+                    guard inet_ntop(AF_INET6, &sin6Addr, &buffer, socklen_t(INET6_ADDRSTRLEN)) != nil else {
+                        return nil
+                    }
+
+                    let ip = String(cString: buffer)
+                    let port = Int(UInt16(bigEndian: addr.sin6_port))
                     return (ip, port)
+
+                default:
+                    return nil
                 }
-                
-            default:
-                continue
             }
+
+            if let result { return result }
         }
         return nil
     }
