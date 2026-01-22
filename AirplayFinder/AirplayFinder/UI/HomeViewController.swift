@@ -13,13 +13,31 @@ class HomeViewController: UIViewController {
     
     private let store = DeviceStore()
     private var devices: [DeviceEntity] = []
+    private let discovery = AirPlayDiscoveryService()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         seedIfEmpty()
         reload()
-        // Do any additional setup after loading the view.
+        
+        discovery.onUpdate = { [weak self] services in
+            guard let self = self else { return }
+            
+            let now = Date()
+            for s in services {
+                self.store.upsert(name: s.name, ipAddress: s.ipAddress, isReachable: true, lastSeen: now)
+            }
+            self.reload()
+        }
+        
+        discovery.onFinished = { [weak self] _ in
+            self?.reload()
+        }
+        
+        store.markAllUnreachable()
+        discovery.startScan(timeOut: 6.0)
+        reload()
     }
     
     private func reload() {

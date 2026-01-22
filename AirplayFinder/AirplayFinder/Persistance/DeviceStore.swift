@@ -57,5 +57,17 @@ final class DeviceStore {
             print("Delete failed: \(error)")
         }
     }
+    
+    func markAllUnreachable() {
+        let request: NSFetchRequest<DeviceEntity> = DeviceEntity.fetchRequest()
+        do {
+            let all = try stack.context.fetch(request)
+            all.forEach {$0.isReachable = false}
+            stack.saveContext()
+        }
+        catch {
+            print("markAllUnreachable failed: \(error)")
+        }
+    }
 }
 
