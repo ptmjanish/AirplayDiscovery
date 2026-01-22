@@ -13,7 +13,7 @@
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="DetailViewController" customModule="AirplayFinder" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="793"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detail" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UUg-fz-9gu">
@@ -72,28 +72,14 @@
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Login"/>
                                 <connections>
-                                    <segue destination="Mm8-rB-dXq" kind="show" id="Kgq-P0-R0h"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bas-Mr-PSt">
-                                <rect key="frame" x="145" y="172" width="190" height="94"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="94" id="HuX-T8-O0C"/>
-                                    <constraint firstAttribute="width" constant="190" id="hIy-eu-bmj"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Login (fake)"/>
-                                <connections>
-                                    <action selector="fakeLoginTapped:" destination="zOU-TC-9jn" eventType="touchUpInside" id="Llx-5P-OSh"/>
+                                    <action selector="loginTapped:" destination="zOU-TC-9jn" eventType="touchUpInside" id="xjK-Jp-LiB"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="GsO-dV-dsy"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="bas-Mr-PSt" firstAttribute="top" secondItem="GsO-dV-dsy" secondAttribute="top" id="LJE-Qq-yt4"/>
                             <constraint firstItem="wCk-va-IhA" firstAttribute="centerX" secondItem="SmZ-sL-EKu" secondAttribute="centerX" id="Pdp-Ko-Naf"/>
-                            <constraint firstItem="GsO-dV-dsy" firstAttribute="trailing" secondItem="bas-Mr-PSt" secondAttribute="trailing" constant="58" id="VqQ-Xc-cH8"/>
                             <constraint firstItem="wCk-va-IhA" firstAttribute="top" secondItem="SmZ-sL-EKu" secondAttribute="top" constant="65" id="a3q-8u-QyO"/>
                         </constraints>
                     </view>
@@ -112,7 +98,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="mED-qv-zzg">
-                                <rect key="frame" x="0.0" y="172" width="393" height="680"/>
+                                <rect key="frame" x="0.0" y="118" width="393" height="734"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="DeviceCell" textLabel="CNT-Ed-3ti" style="IBUITableViewCellStyleDefault" id="AIN-zS-lBY">
