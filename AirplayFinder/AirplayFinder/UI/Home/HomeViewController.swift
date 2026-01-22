@@ -154,6 +154,12 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        
+        let device = fetchedResultsController.object(at: indexPath)
+        
+        let detail = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailViewController") as! DetailViewController
+        detail.device = device
+        navigationController?.pushViewController(detail, animated: true)
     }
 }
 
@@ -164,30 +170,4 @@ extension HomeViewController: NSFetchedResultsControllerDelegate {
         tableView.reloadData()
     }
     
-//    func controller(_ controller: NSFetchedResultsController<any NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
-//        
-//        switch type {
-//        case .insert:
-//            if let newIndexPath {
-//                tableView.insertRows(at: [newIndexPath], with: .automatic)
-//            }
-//        case .delete:
-//            if let indexPath {
-//                tableView.deleteRows(at: [indexPath], with: .automatic)
-//            }
-//        case .move:
-//            if let indexPath {
-//                tableView.deleteRows(at: [indexPath], with: .automatic)
-//            }
-//            if let newIndexPath {
-//                tableView.insertRows(at: [newIndexPath], with: .automatic)
-//            }
-//        case .update:
-//            if let indexPath {
-//                tableView.reloadRows(at: [indexPath], with: .automatic)
-//            }
-//        @unknown default:
-//            tableView.reloadData()
-//        }
-//    }
 }
