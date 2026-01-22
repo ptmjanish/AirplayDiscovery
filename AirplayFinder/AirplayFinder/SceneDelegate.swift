@@ -17,7 +17,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         TokenStore.shared.clearAllIfFirstLaunch()
         
         let window = UIWindow(windowScene: windowScene)
-        window.rootViewController = makeRootViewController()
+        
+        let splash = UIStoryboard(name: "Main", bundle: nil)
+            .instantiateViewController(withIdentifier: "SplashViewController")
+        window.rootViewController = splash
         self.window = window
         window.makeKeyAndVisible()
     }

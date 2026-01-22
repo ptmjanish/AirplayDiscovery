@@ -36,6 +36,33 @@
             </objects>
             <point key="canvasLocation" x="366" y="846"/>
         </scene>
+        <!--Splash View Controller-->
+        <scene sceneID="Gwi-XY-3UF">
+            <objects>
+                <viewController storyboardIdentifier="SplashViewController" id="T5P-kJ-EWh" customClass="SplashViewController" customModule="AirplayFinder" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="OI1-0H-MGK">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="iaV-4Y-qFS">
+                                <rect key="frame" x="186.66666666666666" y="416" width="20" height="20"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="yqJ-ID-9rn"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="iaV-4Y-qFS" firstAttribute="centerX" secondItem="OI1-0H-MGK" secondAttribute="centerX" id="nuV-sa-8zd"/>
+                            <constraint firstItem="iaV-4Y-qFS" firstAttribute="centerY" secondItem="OI1-0H-MGK" secondAttribute="centerY" id="p2w-tX-JFB"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="spinner" destination="iaV-4Y-qFS" id="ndV-mI-Lhx"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hfr-jA-FU7" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1082" y="115"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="C4R-FS-qJG">
             <objects>
