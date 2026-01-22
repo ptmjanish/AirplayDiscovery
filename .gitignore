@@ -8,6 +8,9 @@ xcuserdata/
 ## Obj-C/Swift specific
 *.hmap
 
+# Xcode user state files
+*.xcuserstate
+
 ## App packaging
 *.ipa
 *.dSYM.zip
