@@ -19,36 +19,41 @@ class SplashViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        runAuthFlow()
+        
+        Task { @MainActor in
+            await runAuthFlow()
+        }
     }
     
-    private func runAuthFlow() {
-        if let token = TokenStore.shared.loadToken(),
-            !Reachability.shared.isReachable {
-            print("Offline at launch with token -> force logout")
-            TokenStore.shared.nukeKeychain()
-            gotoLogin()
-            return
-        }
-        
+    @MainActor
+    private func runAuthFlow() async {
+        // No token? no need to wait for network at all.
         guard let token = TokenStore.shared.loadToken() else {
             gotoLogin()
             return
         }
         
-        Task {
-            let isValid = await GitHubAPI.validateToken(token)
-            await MainActor.run {
-                if isValid {
-                    print("Silent auth success")
-                    self.gotoHome()
-                }
-                else {
-                    print("Silent auth failed")
-                    TokenStore.shared.nukeKeychain()
-                    self.gotoLogin()
-                }
-            }
+        // Wait for the first *real* reachability update (or short timeout)
+        let status = await Reachability.shared.waitForInitialStatus(timeout: 0.8)
+        print("Reachability initial status:", status)
+        
+        // Force logout ONLY if confirmed offline
+        if !status.isReachable {
+            print("Offline at launch with token → force logout")
+            TokenStore.shared.deleteToken()
+            gotoLogin()
+            return
+        }
+        
+        // Online + token exists → silent auth validation
+        let isValid = await GitHubAPI.validateToken(token)
+        if isValid {
+            print("Silent auth success")
+            gotoHome()
+        } else {
+            print("Silent auth failed → logout")
+            TokenStore.shared.deleteToken()
+            gotoLogin()
         }
     }
     
