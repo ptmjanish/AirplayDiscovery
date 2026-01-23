@@ -19,11 +19,19 @@ class LoginViewController: UIViewController {
     
     
     @IBAction func loginTapped(_ sender: Any) {
-        guard Reachability.shared.isReachable else {
-            print("Offline. cannot start login.")
-            return
+        Task { @MainActor in
+            let status = await Reachability.shared.waitForInitialStatus(timeout: 0.8)
+            print("[Login] reachability:", status)
+            guard status.isReachable else {
+                print("Offline. Cannot start login")
+                return
+            }
+            startGitHubLoginFlow()
         }
-        
+    }
+    
+    @MainActor
+    private func startGitHubLoginFlow() {
         let authURL = buildGitHubAuthorizeURL()
         LoginManager.shared().startLogin(from: self,
                                          authURL: authURL,
