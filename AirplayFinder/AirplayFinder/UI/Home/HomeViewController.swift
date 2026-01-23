@@ -41,7 +41,7 @@ class HomeViewController: UIViewController {
         setupRefresh()
         setupDiscoveryCallBacks()
         
-        seedIfEmpty()
+//        seedIfEmpty()
         performFetch()
         
     }
@@ -89,23 +89,48 @@ class HomeViewController: UIViewController {
         
         discovery.onFinished =  { [weak self] services in
             self?.tableView.refreshControl?.endRefreshing()
+            self?.updateEmptyState()
         }
     }
     
-    private func seedIfEmpty() {
-        let existing = store.fetchAll()
-        guard existing.isEmpty else { return }
-        store.upsert(name: "Living Room TV", ipAddress: "192.168.1.10", isReachable: false)
-        store.upsert(name: "Bedroom Apple TV", ipAddress: "192.168.1.11", isReachable: false)
-        
+    private func updateEmptyState() {
+        let count = fetchedResultsController.fetchedObjects?.count ?? 0
+
+        if count == 0 {
+            let label = UILabel()
+            label.text = "No AirPlay devices found.\n\nTap Rescan to try again."
+            label.textAlignment = .center
+            label.numberOfLines = 0
+            label.textColor = .secondaryLabel
+            label.font = .systemFont(ofSize: 16, weight: .regular)
+            label.translatesAutoresizingMaskIntoConstraints = false
+
+            let container = UIView()
+            container.addSubview(label)
+
+            NSLayoutConstraint.activate([
+                label.centerXAnchor.constraint(equalTo: container.centerXAnchor),
+                label.centerYAnchor.constraint(equalTo: container.centerYAnchor),
+                label.leadingAnchor.constraint(greaterThanOrEqualTo: container.leadingAnchor, constant: 24),
+                label.trailingAnchor.constraint(lessThanOrEqualTo: container.trailingAnchor, constant: -24)
+            ])
+
+            tableView.backgroundView = container
+            tableView.separatorStyle = .none
+        } else {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+        }
     }
     
     private func performFetch() {
         do {
             try fetchedResultsController.performFetch()
             tableView.reloadData()
+            updateEmptyState()
         } catch {
             print("FRC performFetch failed:", error)
+            updateEmptyState()
         }
     }
     
@@ -168,6 +193,7 @@ extension HomeViewController: NSFetchedResultsControllerDelegate {
     
     func controllerDidChangeContent(_ controller: NSFetchedResultsController<any NSFetchRequestResult>) {
         tableView.reloadData()
+        updateEmptyState()
     }
     
 }
