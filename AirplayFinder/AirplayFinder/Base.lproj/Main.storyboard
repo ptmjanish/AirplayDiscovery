@@ -148,17 +148,19 @@
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Login" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wCk-va-IhA">
-                                <rect key="frame" x="174" y="65" width="45" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lM0-dU-Nnd">
-                                <rect key="frame" x="164" y="409" width="66" height="35"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lM0-dU-Nnd">
+                                <rect key="frame" x="24" y="700" width="345" height="52"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="52" id="QPS-rf-xFk"/>
+                                </constraints>
+                                <inset key="contentEdgeInsets" minX="20" minY="14" maxX="20" maxY="14"/>
                                 <state key="normal" title="Button"/>
-                                <buttonConfiguration key="configuration" style="plain" title="Login"/>
+                                <buttonConfiguration key="configuration" style="filled" image="chevron.right" catalog="system" imagePlacement="trailing" title="Login" imagePadding="8" cornerStyle="large">
+                                    <fontDescription key="titleFontDescription" type="system" weight="semibold" pointSize="17"/>
+                                    <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <color key="baseBackgroundColor" systemColor="systemBlueColor"/>
+                                </buttonConfiguration>
                                 <connections>
                                     <action selector="loginTapped:" destination="zOU-TC-9jn" eventType="touchUpInside" id="xjK-Jp-LiB"/>
                                 </connections>
@@ -167,8 +169,9 @@
                         <viewLayoutGuide key="safeArea" id="GsO-dV-dsy"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="wCk-va-IhA" firstAttribute="centerX" secondItem="SmZ-sL-EKu" secondAttribute="centerX" id="Pdp-Ko-Naf"/>
-                            <constraint firstItem="wCk-va-IhA" firstAttribute="top" secondItem="SmZ-sL-EKu" secondAttribute="top" constant="65" id="a3q-8u-QyO"/>
+                            <constraint firstItem="GsO-dV-dsy" firstAttribute="trailing" secondItem="lM0-dU-Nnd" secondAttribute="trailing" constant="24" id="9A5-Px-xfT"/>
+                            <constraint firstItem="lM0-dU-Nnd" firstAttribute="leading" secondItem="GsO-dV-dsy" secondAttribute="leading" constant="24" id="ImV-OC-jHM"/>
+                            <constraint firstItem="GsO-dV-dsy" firstAttribute="bottom" secondItem="lM0-dU-Nnd" secondAttribute="bottom" constant="32" id="fHQ-wq-j6h"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="14X-34-SHM"/>
@@ -212,19 +215,11 @@
                                     <outlet property="delegate" destination="Mm8-rB-dXq" id="4lP-c2-rvv"/>
                                 </connections>
                             </tableView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Home" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5vX-RB-6al">
-                                <rect key="frame" x="172" y="65" width="49" height="21"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="RcG-EK-Jgh"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="5vX-RB-6al" firstAttribute="centerX" secondItem="ric-zg-Wak" secondAttribute="centerX" id="8ey-dc-esa"/>
                             <constraint firstItem="mED-qv-zzg" firstAttribute="top" secondItem="RcG-EK-Jgh" secondAttribute="top" id="KsM-Fz-nWl"/>
-                            <constraint firstItem="5vX-RB-6al" firstAttribute="top" secondItem="ric-zg-Wak" secondAttribute="top" constant="65" id="Mgb-HC-hWY"/>
                             <constraint firstAttribute="bottom" secondItem="mED-qv-zzg" secondAttribute="bottom" id="Q3H-bn-BwY"/>
                             <constraint firstItem="mED-qv-zzg" firstAttribute="leading" secondItem="RcG-EK-Jgh" secondAttribute="leading" id="Sbk-y2-epA"/>
                             <constraint firstItem="mED-qv-zzg" firstAttribute="trailing" secondItem="RcG-EK-Jgh" secondAttribute="trailing" id="o5n-BH-izc"/>
@@ -241,8 +236,12 @@
         </scene>
     </scenes>
     <resources>
+        <image name="chevron.right" catalog="system" width="97" height="128"/>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBlueColor">
+            <color red="0.0" green="0.53333333333333333" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>
